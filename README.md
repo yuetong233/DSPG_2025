@@ -1,2 +1,6 @@
-# DSPG
-This project will contain the resources and code for the DSPG
+# DSPG Presentation
+| Lecture                   | Content                             |
+|---------------------------|-------------------------------------|
+| 1   | The Introduction of Large Census Data            |
+| 2   | How to clean Large Census Data                 |
+
