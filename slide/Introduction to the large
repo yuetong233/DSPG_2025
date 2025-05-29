@@ -1,0 +1,10 @@
+# Introduction to the Large Census Data 
+## Overview 
+*  How to access large census dataset 
+*  How to choose large census dataset 
+
+### How to access a large census dataset 
+One of the good ways is using [IPUMS](https://www.ipums.org/), which allows you customize the tables the variables you need easily. 
+
+Another way is to use API, which allows you to retrieve the data directly to R. 
+You can setup your first API call here. 
