@@ -1,0 +1,50 @@
+---
+title: "Geocoding"
+author: "Vic Zhao"
+date: "2025-05-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Geocoding Procedure: log in the google account,  Access the Google API Console through link #https://console.cloud.google.com/google/maps-apis/api-list?authuser=0&project=white-artwork-380114&pli=1, selct "Credentials" in the left bar to #access the API key
+
+```{r}
+  library(httr)
+  library(MASS)
+  library(ggplot2)
+  library(readstata13)
+  library(stringr)
+  library(dplyr)
+  library(lubridate)
+  library(lfe)
+  library(tidyr)
+  library(multiwayvcov)
+  library(pscl)
+  library(lmtest)
+  library(stringdist)
+  library(devtools)
+  library(ggmap)
+  library(geosphere)
+  library(weights)
+  library(lme4)
+  library(beepr)
+```
+ 
+#https://cran.r-project.org/web/packages/ggmap/readme/README.html
+We will need to use the ggmap packages for geocoding function 
+
+```{r}
+ if(!requireNamespace("devtools")) install.packages("devtools")
+    devtools::install_github("dkahle/ggmap", ref = "tidyup")
+
+    register_google(key = "your api here")
+
+geocode(paste(stop_Field_2017$location[i], "DC"), timeout = 5000, verbose = TRUE,
+            source = "google", output = "more") -> result7
+
+```
+
+
