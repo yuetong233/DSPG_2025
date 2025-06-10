@@ -1,0 +1,43 @@
+---
+title: "Use of BLS API"
+author: "Vic Zhao"
+date: "2025-05-28"
+format:
+  html:
+    toc: true
+    code-fold: false
+    theme: cosmo
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+## Setup
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Use the BLS API to retrieve the data
+
+```{r}
+# Set the library and install the packages
+library(devtools)
+library(blsR)
+
+# The introduction about this package: https://cran.r-project.org/web/packages/blsR/blsR.pdf
+devtools::install_github("groditi/blsR")
+
+# Acquire the API by registering through https://www.bls.gov/developers/home.htm
+bls_set_key("your personal API")
+
+test_series <- get_series(series_id = "series id you found", 
+                         start_year = 2016, 
+                         end_year = 2024, 
+                         api_key = bls_get_key())
+```
+
+I work through the series number by https://data.bls.gov/PDQWeb/la, and we discover that the series number for each county is "FCN+Fips code+00000000"
