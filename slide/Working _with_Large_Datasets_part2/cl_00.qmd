@@ -40,7 +40,7 @@ library(openxlsx)    # for writing xlsx files
 #| label: load-source-data
 
 # Load the source IPUMS data file
-data_2000 <- read_dta("data/source/usa_00005.dta")
+data_2000 <- read_dta("data/source/your_file_name_here.dta")
 
 
 write.xlsx(data_2000, "data/outcome/2000.xlsx")
