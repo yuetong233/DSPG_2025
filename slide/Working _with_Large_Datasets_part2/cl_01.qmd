@@ -1,0 +1,40 @@
+---
+title: "Clean Allocated Values (cl_01)"
+subtitle: "Return to Education in U.S. 1940-2005"
+author: "Henderson, Polachek, and Wang"
+date: "2009-05-21"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Clean up all allocated values
+
+```{r}
+# Load required libraries
+library(haven)
+library(dplyr)
+library(openxlsx)    # for writing/reading xlsx files
+
+
+# Load data
+data_2000 <- read.xlsx("data/outcome/data_2000.dta")
+
+# Define quality variable list
+qvarlist <- c("qage", "qmarst", "qsex", "qbpl", "qrace", "qeduc", 
+              "qschool", "qclasswk", "qempstat", "quhrswor", 
+              "qwkswork1", "qincwage")
+
+# Remove observations where quality variables > 3 and drop quality variables
+for(qvar in qvarlist) {
+  if(qvar %in% names(data_2000)) {
+    data_2000 <- data_2000 %>%
+      filter(!!sym(qvar) <= 3) %>%
+      select(-!!sym(qvar))
+  }
+}
+
+# Save cleaned data
+write.xlsx(data_2000, "data/outcome/2000_i.xlsx")
+```

@@ -1,0 +1,93 @@
+---
+title: "Sample Restrictions (cl_03)"
+subtitle: "Return to Education in U.S. 1940-2005"
+author: "Henderson, Polachek, and Wang"
+date: "2009-05-21"
+format: html
+execute:
+  warning: false
+  message: false
+---
+
+## Sample restrictions
+
+```{r}
+# Load required libraries
+library(haven)
+library(dplyr)
+
+data_2000_pre <- read.xlsx("data/outcome/2000_pre.xlsx")
+```
+
+## Age restrictions
+
+```{r}
+# To be consistent across years
+# Only individuals aged 20-59 are included
+data_2000_pre <- data_2000_pre %>%
+  filter(age >= 20 & age <= 60)
+```
+
+## Group quarters restrictions
+
+```{r}
+# Keep only certain group quarters
+data_2000_pre <- data_2000_pre %>%
+  filter(gq %in% c(1, 2, 5))
+```
+
+## Employment status restrictions
+
+```{r}
+# Keep only employed individuals
+data_2000_pre <- data_2000_pre %>%
+  filter(empstatd == 10)
+```
+
+## Self-employment restrictions
+
+```{r}
+# Drop self-employed individuals
+data_2000_pre <- data_2000_pre %>%
+  filter(selfemp != 1 | is.na(selfemp))
+```
+
+## Gender restrictions
+
+```{r}
+# Sample is now restricted to males only
+data_2000_pre <- data_2000_pre %>%
+  filter(male == 1)
+```
+
+## Income restrictions
+
+```{r}
+# Keep only individuals with positive income
+data_2000_pre <- data_2000_pre %>%
+  filter(incwage > 0)
+```
+
+## Missing value restrictions
+
+```{r}
+# Keep only individuals without missing values in the variables we need later
+data_2000_pre <- data_2000_pre %>%
+  mutate(
+    touse = !is.na(incwage) & !is.na(schooling) & !is.na(schooling_sp) & 
+            !is.na(exp) & !is.na(exp2) & !is.na(topcoded) & !is.na(topcoded_uhr) & 
+            !is.na(perwt) & !is.na(ageg) & !is.na(race) & !is.na(marr) & 
+            !is.na(immigrant) & !is.na(region) & !is.na(statefip) & 
+            !is.na(origin) & !is.na(wagehr) & !is.na(wagewk)
+  ) %>%
+  filter(touse == TRUE)
+```
+
+## Generate log wage
+
+```{r}
+data_2000_pre <- data_2000_pre %>%
+  mutate(lnwage = log(incwage))
+
+write.xlsx(data_2000_pre, "data/outcome/2000_final.xlsx")
+```

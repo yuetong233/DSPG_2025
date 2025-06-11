@@ -1,0 +1,48 @@
+---
+title: "Data Extraction and Renaming (cl_00)"
+subtitle: "Return to Education in U.S. 1940-2005"
+author: "Henderson, Polachek, and Wang"
+date: "2009-05-21"
+format: 
+  html:
+    toc: true
+    code-fold: false
+    theme: cosmo
+  pdf:
+    toc: true
+execute:
+  warning: false
+  message: false
+---
+
+## Purpose
+
+This script extracts raw IPUMS data and renames it by survey year for consistent file organization.
+
+## Setup
+
+```{r setup}
+#| label: setup
+#| include: true
+
+# Load required libraries
+library(haven)      # for reading/writing Stata files
+library(readxl)     # for reading xlsx files
+library(openxlsx)    # for writing xlsx files
+
+```
+
+## Data Extraction Process
+
+### Load Source Data
+
+```{r load-data}
+#| label: load-source-data
+
+# Load the source IPUMS data file
+data_2000 <- read_dta("data/source/usa_00005.dta")
+
+
+write.xlsx(data_2000, "data/outcome/2000.xlsx")
+
+```
