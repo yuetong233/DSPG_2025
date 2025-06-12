@@ -1,6 +1,6 @@
 ---
 title: "Use of BLS API"
-author: "Vic Zhao"
+author: "Xiaoyi Zhao"
 date: "2025-05-28"
 format:
   html:
@@ -41,3 +41,33 @@ test_series <- get_series(series_id = "series id you found",
 ```
 
 I work through the series number by https://data.bls.gov/PDQWeb/la, and we discover that the series number for each county is "FCN+Fips code+00000000"
+
+## ACS API
+
+```{r}
+# Set the library and install the packages
+library(censusapi)
+library(tidycensus) 
+
+# Acquire the API by registering through https://api.census.gov/data/key_signup.html
+
+census_api_key("your own API", install = TRUE, overwrite = TRUE)
+# Acquire the API by registering through https://api.census.gov/data/key_signup.html
+
+#The main function to retrive the data here are https://cran.r-project.org/web/packages/tidycensus/tidycensus.pdf
+
+#to check the name of the variable
+v15 <- load_variables(2015, "acs5", cache = TRUE)
+View(v15)
+
+# for example, if I want to know the age
+# here is the explanation of the codebook: https://data.census.gov/table/ACSDT5Y2022.B01001
+
+nc_2015 <- get_acs(geography = "county", 
+              year = 2015,
+              variables = c(age = "B01001A_003"), 
+              state = "NC",
+              survey = "acs5",
+              output = "wide")
+
+```
