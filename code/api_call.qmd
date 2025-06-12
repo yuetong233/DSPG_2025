@@ -63,7 +63,7 @@ View(v15)
 # for example, if I want to know the age
 # here is the explanation of the codebook: https://data.census.gov/table/ACSDT5Y2022.B01001
 
-nc_2015 <- get_acs(geography = "county", 
+nc_acs_2015 <- get_acs(geography = "county", 
               year = 2015,
               variables = c(age = "B01001A_003"), 
               state = "NC",
