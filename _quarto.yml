@@ -14,4 +14,7 @@ format:
     toc-location: left
     number-sections: true
     code-fold: true
+    toc-depth: 3
+    toc-title: "Contents"
+    toc-collapse: true
 
