@@ -1,0 +1,18 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Remote Sensing Notes"
+  navbar:
+    left:
+      - href: remote-sensing-intro.qmd
+
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-collapse: true  
+    code-fold: true
+    theme: cosmo
+
