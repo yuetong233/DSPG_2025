@@ -61,5 +61,33 @@
     "title": "Introduction to Remote Sensing and Google Earth Engine",
     "section": "Additional Resources",
     "text": "Additional Resources\n\nGoogle Earth Engine link\nCode Editor Map – what all the features on the code editor mean\nGoogle Earth Engine Blog\nVideo tutorials on using GEE (from the Earth Engine Users’ Summit)"
+  },
+  {
+    "objectID": "code/api_call.html",
+    "href": "code/api_call.html",
+    "title": "Use of BLS API",
+    "section": "",
+    "text": "knitr::opts_chunk$set(echo = TRUE)"
+  },
+  {
+    "objectID": "code/api_call.html#setup",
+    "href": "code/api_call.html#setup",
+    "title": "Use of BLS API",
+    "section": "",
+    "text": "knitr::opts_chunk$set(echo = TRUE)"
+  },
+  {
+    "objectID": "code/api_call.html#use-the-bls-api-to-retrieve-the-data",
+    "href": "code/api_call.html#use-the-bls-api-to-retrieve-the-data",
+    "title": "Use of BLS API",
+    "section": "2 Use the BLS API to retrieve the data",
+    "text": "2 Use the BLS API to retrieve the data\n\n# Set the library and install the packages\nlibrary(devtools)\nlibrary(blsR)\n\n# The introduction about this package: https://cran.r-project.org/web/packages/blsR/blsR.pdf\ndevtools::install_github(\"groditi/blsR\")\n\n# Acquire the API by registering through https://www.bls.gov/developers/home.htm\nbls_set_key(\"your personal API\")\n\ntest_series &lt;- get_series(series_id = \"series id you found\", \n                         start_year = 2016, \n                         end_year = 2024, \n                         api_key = bls_get_key())\n\nI work through the series number by https://data.bls.gov/PDQWeb/la, and we discover that the series number for each county is “FCN+Fips code+00000000”"
+  },
+  {
+    "objectID": "code/api_call.html#acs-api",
+    "href": "code/api_call.html#acs-api",
+    "title": "Use of BLS API",
+    "section": "3 ACS API",
+    "text": "3 ACS API\n\n# Set the library and install the packages\nlibrary(censusapi)\nlibrary(tidycensus) \n\n# Acquire the API by registering through https://api.census.gov/data/key_signup.html\n\ncensus_api_key(\"your api key\", install = TRUE, overwrite = TRUE)\n# Acquire the API by registering through https://api.census.gov/data/key_signup.html\n\n#The main function to retrive the data here are https://cran.r-project.org/web/packages/tidycensus/tidycensus.pdf\n\n#to check the name of the variable\nv15 &lt;- load_variables(2015, \"acs5\", cache = TRUE)\nView(v15)\n\n# for example, if I want to know the age\n# here is the explanation of the codebook: https://data.census.gov/table/ACSDT5Y2022.B01001\n\nnc_acs_2015 &lt;- get_acs(geography = \"county\", \n              year = 2015,\n              variables = c(age = \"B01001A_003\"), \n              state = \"NC\",\n              survey = \"acs5\",\n              output = \"wide\")"
   }
 ]
