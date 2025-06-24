@@ -15,9 +15,9 @@ Advantages of using remotely sensed data:
 -   Systematic data collection
 -   Repetitive observations over time
 
-![Satellite Process](/Users/wheeinner/Library/Mobile Documents/com~apple~CloudDocs/VT/DSPG2025/remote-sensing-process.png)
+![Satellite Process](figures/remote-sensing-process.png)
 
-![Electromagnetic Spectrum](/Users/wheeinner/Library/Mobile Documents/com~apple~CloudDocs/VT/DSPG2025/electromagnetic-spectrum.png)
+![Electromagnetic Spectrum](figures/electromagnetic-spectrum.png)
 
 
 # 1. Getting Started {.unnumbered}
@@ -614,10 +614,10 @@ Although there are different types of joins, the process brings information toge
 
 ## Four Types of Resolution
 
--   Spatial resolution: The size of the smallest object that can be detected (i.e., pixel size). ![Spatial resolutions](/Users/wheeinner/Library/Mobile%20Documents/com~apple~CloudDocs/VT/DSPG2025/Spatial.png)
+-   Spatial resolution: The size of the smallest object that can be detected (i.e., pixel size). ![Spatial resolutions](figures/Spatial.png)
 -   Temporal resolution: The frequency at which a sensor revisits the same location on Earth (i.e., revisit time or orbital period).
--   Spectral resolution: The ability of a sensor to distinguish between different wavelengths (i.e., number and width of spectral bands). ![Wavelength vs Reflectance](/Users/wheeinner/Library/Mobile%20Documents/com~apple~CloudDocs/VT/DSPG2025/Spectral.png)
--   Radiometric resolution: The sensor's sensitivity to differences in signal intensity or reflectance (i.e., bit depth). ![Radiometric Resolution](/Users/wheeinner/Library/Mobile%20Documents/com~apple~CloudDocs/VT/DSPG2025/Radiometric.png)
+-   Spectral resolution: The ability of a sensor to distinguish between different wavelengths (i.e., number and width of spectral bands). ![Wavelength vs Reflectance](figures/Spectral.png)
+-   Radiometric resolution: The sensor's sensitivity to differences in signal intensity or reflectance (i.e., bit depth). ![Radiometric Resolution](figures/Radiometric.png)
 
 Suppose we are working with Landsat 8 and want to find key details such as the image scale, the number of images within a specific time range, the number of bands, and the data type of each band (across four resolutions). We can either look up this information in the documentation or use the following code to extract it directly.
 
@@ -1277,7 +1277,7 @@ library(tidyr)
 library(tibble)
 
 # Authenticate
-nassqs_auth(key = "D2E4F865-1E08-356C-A66E-919425CF4C4E")
+nassqs_auth(key = "Your_Own_API")
 
 # Define the function
 crop_data <- function(year = 2025) {
@@ -1450,7 +1450,7 @@ ee_Initialize()
 
 # Census part ---------------------------------
 # Set your Census API key
-# census_api_key("34b5eab15f8112899ebfd01a88ff8f522b8818be", install = TRUE)
+# census_api_key("Your_Own_API", install = TRUE)
 
 # Define variables (ACS 5-year 2020)
 variables <- c(
@@ -1533,7 +1533,7 @@ ee_monitoring(task)
 
 # Load urban expansion raster, download the Raster map locally
 library(terra)
-urban_raster <- rast("/Users/wheeinner/Downloads/urban_change_5y_montgomery.tif")
+urban_raster <- rast("figures/urban_change_5y_montgomery.tif")
 plot(urban_raster, main = "Urban Change in Montgomery County")
 
 # Reproject ACS geometries to match raster CRS
