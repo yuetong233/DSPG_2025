@@ -12,9 +12,7 @@ format:
   html:
     toc: true
     toc-location: left
-    number-sections: true
+    toc-collapse: true  
     code-fold: true
-    toc-depth: 3
-    toc-title: "Contents"
-    toc-collapse: true
+    theme: cosmo
 
