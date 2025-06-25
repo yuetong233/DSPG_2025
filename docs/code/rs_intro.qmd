@@ -1,7 +1,19 @@
 ---
 title: "Introduction to Remote Sensing and Google Earth Engine"
-date: 2025-06-24
 author: "Yuetong Zhang"
+date: "2025-06-24"
+format:
+  html:
+    toc: true
+    code-fold: false
+    theme: cosmo
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+  eval: false
 ---
 
 **Acknowledgment:** I am grateful to Dr. Elinor Benami for the original lecture and lab materials, used here under the Creative Commons License (Attribution-NonCommercial-ShareAlike 4.0 International). Modifications have been made to the context and code of the original content.
