@@ -1,5 +1,6 @@
 ---
 title: "Introduction to Remote Sensing and Google Earth Engine"
+date: 2025-06-24
 author: "Yuetong Zhang"
 ---
 
