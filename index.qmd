@@ -4,6 +4,6 @@ format: html
 ---
 
 - [API Call Example](code/api_call.html)
-- [Remote Sensing Introduction](code/Remote_Sensing_Intro.html)
+- [Remote Sensing Introduction](code/rs_intro.html)
 
 ---

@@ -13,7 +13,7 @@ website:
         text: Home
       - href: code/api_call.qmd
         text: API Call
-      - href: code/remote_sensing_intro.qmd
+      - href: code/rs_intro.qmd
         text: Remote Sensing
 
 format:
