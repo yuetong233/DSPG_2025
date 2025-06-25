@@ -6,7 +6,7 @@ website:
   title: "Remote Sensing Notes"
   navbar:
     left:
-      - href: remote-sensing-intro.qmd
+      - href: Remote_Sensing_Intro.qmd
 
 format:
   html:
