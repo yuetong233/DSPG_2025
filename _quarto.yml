@@ -1,12 +1,20 @@
 project:
   type: website
   output-dir: docs
+  # Ensures Quarto includes all QMDs recursively
+  resources:
+    - code/**.qmd
 
 website:
-  title: "Remote Sensing Notes"
+  title: "DSPG Workshop"
   navbar:
     left:
-      - href: remote-sensing-intro.qmd
+      - href: index.qmd
+        text: Home
+      - href: code/api_call.qmd
+        text: API Call
+      - href: code/remote_sensing_intro.qmd
+        text: Remote Sensing
 
 format:
   html:
