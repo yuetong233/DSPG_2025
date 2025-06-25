@@ -4,6 +4,7 @@ project:
   # Ensures Quarto includes all QMDs recursively
   resources:
     - code/**.qmd
+    - figures/
 
 website:
   title: "DSPG Workshop"
