@@ -15,9 +15,9 @@ Advantages of using remotely sensed data:
 -   Systematic data collection
 -   Repetitive observations over time
 
-![Satellite Process](figures/remote-sensing-process.png)
+![Satellite Process](../figures/remote-sensing-process.png)
 
-![Electromagnetic Spectrum](figures/electromagnetic-spectrum.png)
+![Electromagnetic Spectrum](../figures/electromagnetic-spectrum.png)
 
 # 1. Getting Started {.unnumbered}
 
@@ -614,12 +614,12 @@ Although there are different types of joins, the process brings information toge
 ## Four Types of Resolution {.unnumbered}
 
 -   Spatial resolution: The size of the smallest object that can be detected (i.e., pixel size). 
-![Spatial resolutions](figures/Spatial.png)
+![Spatial resolutions](../figures/Spatial.png)
 -   Temporal resolution: The frequency at which a sensor revisits the same location on Earth (i.e., revisit time or orbital period).
 -   Spectral resolution: The ability of a sensor to distinguish between different wavelengths (i.e., number and width of spectral bands). 
-![Wavelength vs Reflectance](figures/Spectral.png)
+![Wavelength vs Reflectance](../figures/Spectral.png)
 -   Radiometric resolution: The sensor's sensitivity to differences in signal intensity or reflectance (i.e., bit depth). 
-![Radiometric Resolution](figures/Radiometric.png)
+![Radiometric Resolution](../figures/Radiometric.png)
 
 Suppose we are working with Landsat 8 and want to find key details such as the image scale, the number of images within a specific time range, the number of bands, and the data type of each band (across four resolutions). We can either look up this information in the documentation or use the following code to extract it directly.
 
