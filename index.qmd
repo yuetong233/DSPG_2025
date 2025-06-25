@@ -3,10 +3,7 @@ title: "Homepage"
 format: html
 ---
 
-# Welcome
-
-## Available Topics
 - [API Call Example](code/api_call.html)
-- [Remote Sensing Introduction](code/remote_sensing_intro.html)
+- [Remote Sensing Introduction](code/Remote_Sensing_Intro.html)
 
 ---
