@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Anbin Rhee">
+
+<title>Common Statistical Models with R Examples</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Common_Stat_Models_with_R_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Common_Stat_Models_with_R_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Common_Stat_Models_with_R_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Common_Stat_Models_with_R_files/libs/quarto-html/popper.min.js"></script>
+<script src="Common_Stat_Models_with_R_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Common_Stat_Models_with_R_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Common_Stat_Models_with_R_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Common_Stat_Models_with_R_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Common_Stat_Models_with_R_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Common_Stat_Models_with_R_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Common_Stat_Models_with_R_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Common Statistical Models with R Examples</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Anbin Rhee </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="simple-linear-regression-slr" class="level1">
+<h1>Simple Linear Regression (SLR)</h1>
+<p>Simple Linear Regression is a method to model the relationship between <strong>one predictor variable (X)</strong> and <strong>one outcome variable (Y)</strong>, assuming the relationship is roughly linear. Its purpose is to predict the outcome variable based on the predictor and to quantify how much change in the predictor leads to change in the outcome. The SLR equation takes the form</p>
+<p><span class="math display">\[
+Y= \beta_0 +\beta_1 X + \epsilon,
+\]</span></p>
+<p>where <span class="math inline">\(\beta_0\)</span> is the intercept, <span class="math inline">\(\beta_1\)</span> is the slope, and <span class="math inline">\(\epsilon\)</span> is random error. SLR helps us understand and predict how one variable influences another, under assumptions that the relationship is linear, the errors are normally distributed and have constant variance, and observations are independent. In practice, SLR is like drawing the best-fitting straight line through a scatter plot to make sense of patterns in the data. For example, we might ask: how much does a student’s exam score improve for each extra hour of study?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stats)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># set your directory</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"~/Desktop/RA,TA,SAIG/DSPG/Stat Lectures"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load the data file</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data_SLR <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file=</span><span class="st">"exam_data"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># scatter plot</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_SLR, <span class="fu">aes</span>(<span class="at">x=</span>study_hours, <span class="at">y=</span>exam_score))<span class="sc">+</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Relationship between Study Hours and Exam Scores"</span>)<span class="sc">+</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Common_Stat_Models_with_R_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Scatter plots are super important! They help us to see if there is a pattern, a linear trend, or outliers before we fit the model. Here, you see a clear upward trend: more study hours generally means higher exam scores.</p>
+<p>Now, let’s fit the model: exam_score = <span class="math inline">\(\beta_0\)</span> + <span class="math inline">\(\beta_1\)</span> study_hours + <span class="math inline">\(\epsilon_i\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run SLR models with lm function</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>SLR <span class="ot">&lt;-</span> <span class="fu">lm</span>(exam_score<span class="sc">~</span>study_hours, <span class="at">data=</span>data_SLR)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># output</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(SLR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = exam_score ~ study_hours, data = data_SLR)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-11.3763  -3.0675  -0.1411   2.8744  13.2117 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  37.6210     2.1316   17.65   &lt;2e-16 ***
+study_hours   5.5231     0.3314   16.66   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.13 on 48 degrees of freedom
+Multiple R-squared:  0.8526,    Adjusted R-squared:  0.8495 
+F-statistic: 277.7 on 1 and 48 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>The simple linear regression model examined the relationship between exam score and study hours. The intercept of about 37.6 suggests that a student who studied zero hours would be expected to score roughly 37.6 points on the exam, which represents the model’s baseline. The estimated slope of 5.52 means that for each additional hour of study, the expected exam score increases by about 5.5 points. This effect is highly statistically significant, with a p-value less than 2e-16, providing strong evidence that more study hours are associated with higher exam scores. The model’s R-squared value is approximately 0.85, indicating that about 85% of the variability in exam scores can be explained by study hours alone, which is quite high and suggests an excellent fit. The residual standard error is about 5.1, meaning the typical difference between the observed scores and the predicted scores is around 5 points. Overall, these results show a strong positive relationship between the number of hours studied and exam performance, with more study time leading to substantially higher predicted scores.</p>
+<section id="model-assumption-check" class="level2">
+<h2 class="anchored" data-anchor-id="model-assumption-check">Model Assumption Check</h2>
+<section id="independence-and-constant-variance" class="level3">
+<h3 class="anchored" data-anchor-id="independence-and-constant-variance">Independence and Constant Variance</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_SLR<span class="sc">$</span>residuals <span class="ot">&lt;-</span> <span class="fu">resid</span>(SLR)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>data_SLR<span class="sc">$</span>fitted <span class="ot">&lt;-</span> <span class="fu">fitted</span>(SLR)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_SLR, <span class="fu">aes</span>(<span class="at">x =</span> fitted, <span class="at">y =</span> residuals)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Homoscedasticity Check"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted Values"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Common_Stat_Models_with_R_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This code checks two important assumptions of simple linear regression: <strong>independence</strong> and <strong>constant variance (homoscedasticity)</strong> of the residuals. After extracting the residuals and fitted values from the regression model, the code plots the residuals against the fitted values using <code>ggplot2</code>, with a horizontal red reference line at zero.</p>
+<p>This plot helps to assess whether the residuals are randomly scattered around zero without any clear pattern, which supports the <strong>independence</strong> assumption (no time or sequence pattern) as well as <strong>homoscedasticity</strong>, which requires the vertical spread of residuals to remain roughly the same across the range of predicted values.</p>
+<p>In the displayed plot, the residuals appear fairly randomly distributed around zero, with no obvious systematic pattern or trend, which suggests that the independence assumption is reasonable. Additionally, the spread of the residuals is relatively even across fitted values, supporting the constant variance assumption. There is some slight variability at higher fitted values, but no severe funnel or curved patterns, indicating the model meets these assumptions well enough for valid inference.</p>
+</section>
+<section id="linearity" class="level3">
+<h3 class="anchored" data-anchor-id="linearity">Linearity</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_SLR, <span class="fu">aes</span>(<span class="at">x =</span> study_hours, <span class="at">y =</span> exam_score)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Linearity Check"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Study Hours"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Exam Score"</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Common_Stat_Models_with_R_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This plot is designed to check the <strong>linearity assumption</strong> of simple linear regression, which requires that the relationship between the predictor (study hours) and the response variable (exam score) is approximately linear. The code uses <code>ggplot2</code> to plot the raw data points and overlays a linear trend line with a confidence band using <code>geom_smooth(method = "lm")</code>. In the resulting plot, the blue regression line captures the overall trend of the data, while the shaded gray area shows the 95% confidence interval for the line. The pattern of data points closely follows a straight line, with no evidence of curves or major deviations, supporting the linearity assumption. This means a linear model is appropriate for describing the relationship between study hours and exam scores.</p>
+<p>Visualizing the linear relationship in this way is a very important first step before interpreting the model’s coefficients, because if the true relationship were curved or non-linear, the linear regression results could be misleading. This check reassures us that using a straight line to model these data makes sense.</p>
+</section>
+<section id="normality" class="level3">
+<h3 class="anchored" data-anchor-id="normality">Normality</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_SLR, <span class="fu">aes</span>(<span class="at">x =</span> residuals)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Histogram of Residuals"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Common_Stat_Models_with_R_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This plot is used to check the <strong>normality assumption</strong> of simple linear regression, which says that the residuals should be approximately normally distributed. The code uses <code>ggplot2</code> to create a histogram of the residuals from the model, with 15 bins and a light blue fill to make the distribution easy to see.</p>
+<p>The histogram shows the counts of residuals across their range. Ideally, for normality, we hope to see a roughly bell-shaped, symmetric pattern centered around zero. In this case, the histogram appears reasonably symmetric, with most residuals clustered around zero and fewer residuals farther from zero on either side. There are no dramatic gaps or clear skew, although there might be a slightly longer right tail, but nothing extreme.</p>
+<p>This supports the idea that the residuals are approximately normal, which is important because normal residuals help ensure the reliability of hypothesis tests and confidence intervals in linear regression. It is always good practice to combine this histogram with a <strong>QQ plot</strong> for a more detailed normality check, which you can do next.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_SLR, <span class="fu">aes</span>(<span class="at">sample =</span> residuals)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>(<span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Normal Q-Q Plot of Residuals"</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Common_Stat_Models_with_R_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This QQ plot is another way to check the <strong>normality assumption</strong> of residuals in simple linear regression. The code uses <code>ggplot2</code> to plot the quantiles of the model’s residuals against the theoretical quantiles from a normal distribution, adding a reference red line with <code>stat_qq_line()</code>.</p>
+<p>If the residuals are approximately normally distributed, then the points on the QQ plot should fall roughly along the red line. In this output, most points follow the red line quite closely in the middle range, with only a few mild deviations at the tails, especially on the upper right side. This is generally acceptable for regression, as slight deviations in the tails are common and not usually a serious concern.</p>
+<p>Overall, this QQ plot supports the histogram finding that the residuals are approximately normal, which validates the regression’s inference procedures such as confidence intervals and p-values. Using both a histogram and a QQ plot together is a good practice to build confidence that the normality assumption is reasonable for the data.</p>
+</section>
+</section>
+</section>
+<section id="multiple-linear-regression-mlr" class="level1">
+<h1>Multiple Linear Regression (MLR)</h1>
+<p>Multiple linear regression (MLR) is a statistical technique that models the relationship between one continuous outcome variable and two or more predictor variables. It extends simple linear regression by allowing you to include multiple independent variables simultaneously, so you can examine their combined effects on the outcome while adjusting for one another. The MLR equation takes the form</p>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_p X_p + \epsilon,
+\]</span>where β0 is the intercept, <span class="math inline">\(\beta_1\)</span> through <span class="math inline">\(\beta_p\)</span> are the slopes for each predictor, and ε is random error. MLR helps you understand how each predictor is associated with the outcome while holding the other predictors constant. In practice, MLR is a powerful way to answer questions like “How does salary change depending on experience, education level, and hours worked, all at the same time?”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the salary_data file</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>salary_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"salary_data"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># see the first six data</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(salary_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  X   salary experience education_level hours_per_week
+1 1 61606.50       11.9     High School             43
+2 2 79432.32       14.5             PhD             34
+3 3 68133.52        7.4          Master             42
+4 4 48892.97       10.3     High School             41
+5 5 49294.79        7.6     High School             37
+6 6 67885.82        8.4          Master             35</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualization: experiance vs. salary by education level</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(salary_data, <span class="fu">aes</span>(<span class="at">x=</span>experience, <span class="at">y=</span>salary, <span class="at">color=</span>education_level)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>, <span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Employee Salaries by Experience and Education Level"</span>, </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Years of Experience"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span> <span class="st">"Annual Salary"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">color=</span><span class="st">"Education Level"</span>)<span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Common_Stat_Models_with_R_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualization: hours per week vs. salary by education level</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(salary_data, <span class="fu">aes</span>(<span class="at">x=</span>hours_per_week, <span class="at">y=</span>salary, <span class="at">color=</span>education_level)) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>, <span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Employee Salaries by Weekly Hours and Education Level"</span>, </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Hours Worked per Week"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span> <span class="st">"Annual Salary"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">color=</span><span class="st">"Education Level"</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Common_Stat_Models_with_R_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The first scatter plot shows how salary increases with experience, with each education level colored differently. You can see that higher education levels tend to cluster higher up, showing higher salaries for the same experience.</p>
+<p>The second scatter plot shows how salary changes with hours worked per week, with each education level. There does not appear to be a very strong upward or downward trend along the x-axis, suggesting that hours worked per week alone does <em>not</em> have a strong relationship with annual salary. Salaries are spread out across different hours worked, meaning people working 35 hours and those working 45 hours can have similar salaries. Also, Higher education levels tend to sit higher up on the salary scale, regardless of hours worked.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set the baseline category as High_school</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>salary_data<span class="sc">$</span>education_level <span class="ot">&lt;-</span> <span class="fu">factor</span>(salary_data<span class="sc">$</span>education_level, <span class="at">ordered =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>salary_data<span class="sc">$</span>education_level <span class="ot">&lt;-</span> <span class="fu">relevel</span>(salary_data<span class="sc">$</span>education_level, <span class="at">ref =</span> <span class="st">"High School"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># run multiple linear regression</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>MLR <span class="ot">&lt;-</span> <span class="fu">lm</span>(salary <span class="sc">~</span> experience <span class="sc">+</span> education_level <span class="sc">+</span> hours_per_week, <span class="at">data =</span> salary_data)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(MLR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = salary ~ experience + education_level + hours_per_week, 
+    data = salary_data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10986.5  -3265.9   -236.6   2704.4  12821.6 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)             35480.39    3987.61   8.898 4.05e-14 ***
+experience               1907.66      85.39  22.341  &lt; 2e-16 ***
+education_levelBachelor  5375.48    1441.44   3.729 0.000328 ***
+education_levelMaster   10936.71    1410.09   7.756 1.03e-11 ***
+education_levelPhD      15381.78    1411.88  10.895  &lt; 2e-16 ***
+hours_per_week            115.86      93.38   1.241 0.217811    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4658 on 94 degrees of freedom
+Multiple R-squared:  0.8648,    Adjusted R-squared:  0.8576 
+F-statistic: 120.3 on 5 and 94 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>The multiple linear regression results show that experience, education level, and hours worked per week were used to predict annual salary. The intercept of about $35,480 represents the expected salary for a person with a high school education (the reference group), zero years of experience, and working zero hours per week, although this is a hypothetical baseline. Each additional year of experience is associated with an increase of about $1,908 in salary, holding other variables constant, and this effect is highly significant. Compared to employees with a high school education, those with a bachelor’s degree earn about $5,375 more on average, those with a master’s degree earn roughly $10,936 more, and those with a PhD earn about $15,382 more, adjusting for experience and weekly hours; all these differences are statistically significant. On the other hand, the hours worked per week showed an estimated effect of about $116 per additional hour, but this was not statistically significant (p = 0.22), suggesting we cannot conclude a real effect of working hours on salary after accounting for education and experience. The model explains approximately 86.5% of the variation in salaries (R-squared = 0.865), indicating an excellent fit, and the overall F-test shows the model is statistically significant as a whole. Overall, this analysis suggests that education level and experience are important predictors of salary, while the number of hours worked per week does not show a clear effect in this data.</p>
+</section>
+<section id="two-sample-t-test-comparing-two-groups" class="level1">
+<h1>Two Sample T-Test (Comparing Two Groups)</h1>
+<p>A two-sample t-test is a statistical method used to compare the means of two independent groups to determine if there is evidence of a significant difference between them. This test is commonly applied when you have one categorical variable with two groups (such as Campaign A vs.&nbsp;Campaign B) and a continuous outcome variable (like purchase amount). The test assumes that observations are independent, the outcome variable is approximately normally distributed in each group, and that the variances are roughly equal (though the Welch version of the test relaxes that last assumption). The null hypothesis states that the two groups have equal population means, while the alternative hypothesis suggests a difference exists.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>campaign_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"campaign_data"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># check the data</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(campaign_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  X campaign purchase_amount
+1 1        A        32.54461
+2 2        A        57.89701
+3 3        A        58.62032
+4 4        A        49.78052
+5 5        A        60.79194
+6 6        A        47.65141</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(campaign_data, <span class="fu">aes</span>(<span class="at">x=</span>campaign, <span class="at">y=</span>purchase_amount, <span class="at">fill=</span>campaign)) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Comparison of Purchase Amounts by Campaign"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Campaign"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Purchase Amount ($)"</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Common_Stat_Models_with_R_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The boxplot created with <code>ggplot2</code> shows the distribution of purchase amounts for each campaign group. The plot indicates that Campaign B tends to have higher purchase amounts than Campaign A: the median (middle line of the box) for Campaign B is higher, and the upper quartile also appears greater. This suggests that Campaign B may have encouraged higher spending. The boxplot also helps us quickly check for outliers and see if the spread of the data looks similar between groups.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># two-sample t-test</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(purchase_amount <span class="sc">~</span> campaign, <span class="at">data =</span> campaign_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  purchase_amount by campaign
+t = -4.8066, df = 170.21, p-value = 3.356e-06
+alternative hypothesis: true difference in means between group A and group B is not equal to 0
+95 percent confidence interval:
+ -13.707432  -5.726257
+sample estimates:
+mean in group A mean in group B 
+       50.63414        60.35098 </code></pre>
+</div>
+</div>
+<p>This two-sample t-test compares the mean purchase amounts between Campaign A and Campaign B. The test statistic is approximately –4.81, with about 170 degrees of freedom, and a very small p-value of 3.36 × 10⁻⁶, which is far below the usual 0.05 threshold. This means we reject the null hypothesis and conclude that there is a statistically significant difference in average purchase amounts between the two campaigns. Specifically, the mean purchase amount for Campaign A was about $50.63, while for Campaign B it was about $60.35, suggesting that Campaign B led to higher spending on average. The 95% confidence interval for the difference in means ranges from –13.7 to –5.7 dollars, which does not include zero, further supporting that the difference is significant. Overall, this provides strong evidence that Campaign B is more effective in increasing customer purchase amounts than Campaign A.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(purchase_amount <span class="sc">~</span> campaign, <span class="at">data=</span>campaign_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = purchase_amount ~ campaign, data = campaign_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-39.359  -8.514  -0.010  10.272  35.996 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   50.634      1.429  35.422  &lt; 2e-16 ***
+campaignB      9.717      2.022   4.807 3.03e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 14.29 on 198 degrees of freedom
+Multiple R-squared:  0.1045,    Adjusted R-squared:  0.09997 
+F-statistic:  23.1 on 1 and 198 DF,  p-value: 3.031e-06</code></pre>
+</div>
+</div>
+</section>
+<section id="anova-comparing-multiple-groups" class="level1">
+<h1>ANOVA (Comparing Multiple Groups)</h1>
+<p>Analysis of Variance, or <strong>ANOVA</strong>, is a statistical method used to compare the means of three or more independent groups. It tests whether at least one group mean is significantly different from the others.</p>
+<p>The ANOVA equation takes the form</p>
+<p><span class="math display">\[
+Y_{ij} = \mu + \alpha_j+ \epsilon_{ij},
+\]</span>where <span class="math inline">\(\mu\)</span> is the grand mean, <span class="math inline">\(\alpha_j\)</span> effect of being <span class="math inline">\(j\)</span> group, and ε is random error.</p>
+<p>The ANOVA procedure partitions the total variability in the data into between-group differences and within-group differences, then compares these using an F-test. The null hypothesis is that all group means are equal, while the alternative hypothesis is that at least one group differs.</p>
+<p><span class="math display">\[
+H_0 : \alpha_1 = \alpha_2 = \cdots = \alpha_J \ \  \text{vs.}\ \ H_1: \text{At least one group is different}
+\]</span></p>
+<p>ANOVA assumes the data are normally distributed within groups, have equal variances, and are based on independent observations. If the ANOVA test is significant, you can follow up with post-hoc tests (like Tukey HSD) to pinpoint which groups differ from each other. ANOVA is a fundamental tool for analyzing experiments, marketing campaigns, educational methods, and any context involving multiple groups to be compared on a continuous outcome. Here, we will use ANOVA to compare purchase amounts across multiple campaigns (Campaign A, B, or C).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the multiple campaign data</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>multiple_campaign_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"multiple_campaign_data"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># see the first six observations</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(multiple_campaign_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  X campaign purchase_amount
+1 1        A        47.30900
+2 2        A        76.25109
+3 3        A        46.46337
+4 4        A        42.91568
+5 5        A        42.08897
+6 6        A        57.61050</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualization : boxplot</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(multiple_campaign_data, <span class="fu">aes</span>(<span class="at">x=</span>campaign, <span class="at">y=</span>purchase_amount, <span class="at">fill=</span>campaign)) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Purchase Amount by Campaign"</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Campaign"</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Purchase Amount ($)"</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Common_Stat_Models_with_R_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The boxplots display the distribution of purchase amounts for each campaign group (A, B, and C). For each campaign, the box represents the middle 50% of the data (the interquartile range), with the horizontal line inside the box showing the median purchase amount. The vertical lines (whiskers) extend to show the range of most of the data, and dots outside these whiskers represent outliers.</p>
+<p>In this plot, Campaign B’s box is higher overall, with a higher median and a wider spread of purchase amounts, suggesting that customers exposed to Campaign B tend to spend more and with greater variability. Campaign A has the lowest median and a tighter box, showing lower and more consistent purchase amounts. Campaign C sits somewhere in between, with a median higher than Campaign A but lower than B, and it shows a few outliers on the higher side.</p>
+<p>Overall, these boxplots visually suggest that there are differences in typical spending between the campaigns, with Campaign B likely being the most successful, and provide a good motivation to test these differences formally with ANOVA.</p>
+<p>There are two ways to run ANOVA models in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ANOVA</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># option 1</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>anova_model <span class="ot">&lt;-</span> <span class="fu">aov</span>(purchase_amount <span class="sc">~</span> campaign, <span class="at">data=</span>multiple_campaign_data)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+campaign      2   8610    4305   25.09 8.56e-11 ***
+Residuals   297  50964     172                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Post-hoc test if needed</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(anova_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = purchase_amount ~ campaign, data = multiple_campaign_data)
+
+$campaign
+         diff        lwr       upr     p adj
+B-A 13.121273   8.757542 17.485004 0.0000000
+C-A  6.383167   2.019436 10.746898 0.0018809
+C-B -6.738106 -11.101837 -2.374375 0.0009452</code></pre>
+</div>
+</div>
+<p>The ANOVA results in the first summary test whether there are any differences in mean purchase amounts across Campaigns A, B, and C. The F-test is highly significant (F = 25.09, p &lt; 0.0000000001), which means there is strong evidence that at least one campaign differs from the others in average purchase amount. However, ANOVA does not say which pairs of campaigns are different, so a post-hoc test is needed.</p>
+<p>The Tukey HSD post-hoc test provides those pairwise comparisons. It shows that Campaign B has an average purchase amount about $13.12 higher than Campaign A (p &lt; 0.0001), Campaign C is about $6.38 higher than Campaign A (p = 0.0019), and Campaign C is about $6.74 lower than Campaign B (p = 0.0009). All of these differences are statistically significant after adjusting for multiple comparisons.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># option 2: preferred</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>anova_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(purchase_amount<span class="sc">~</span>campaign, <span class="at">data=</span>multiple_campaign_data)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = purchase_amount ~ campaign, data = multiple_campaign_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-34.936  -7.710  -0.149   7.955  48.256 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   49.064      1.310  37.455  &lt; 2e-16 ***
+campaignB     13.121      1.853   7.083 1.03e-11 ***
+campaignC      6.383      1.853   3.446 0.000652 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 13.1 on 297 degrees of freedom
+Multiple R-squared:  0.1445,    Adjusted R-squared:  0.1388 
+F-statistic: 25.09 on 2 and 297 DF,  p-value: 8.556e-11</code></pre>
+</div>
+</div>
+<p>The alternative approach with <code>lm()</code> fits the same ANOVA in a regression framework, coding Campaign A as the baseline category. The coefficients confirm the same story:</p>
+<ol type="1">
+<li>Campaign B is associated with a $13.12 higher average purchase than Campaign A (p &lt; 0.0001),</li>
+<li>Campaign C is associated with a $6.38 higher average purchase than Campaign A (p = 0.00065).</li>
+</ol>
+<p>This linear model formulation makes it easier to interpret the differences directly against the reference group, Campaign A. The residual standard error and R-squared match the ANOVA approach, showing consistent results.</p>
+<p>Overall, these outputs strongly support that Campaign B performed best in encouraging higher spending, followed by Campaign C, with Campaign A performing worst.</p>
+</section>
+<section id="logistic-regressions" class="level1">
+<h1>Logistic Regressions</h1>
+<p>Logistic regression is a statistical modeling technique used when the outcome variable is binary — that is, it has only two possible values, often coded as 0 or 1. Instead of predicting a continuous outcome like linear regression, logistic regression models the <em>probability</em> that an observation belongs to a particular category (usually coded as 1). It does this by estimating the log-odds of success as a linear combination of predictor variables. Logistic regression is very popular for medical trials, marketing conversion rates, and other situations where the outcome is yes/no, success/failure, or event/no event. Interpreting logistic regression results typically focuses on odds ratios, which describe how the odds of the outcome change with each predictor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the treatment data</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>treatment_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"treatment_data"</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># quick check frequency table</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(treatment_data<span class="sc">$</span>treatment, treatment_data<span class="sc">$</span>success)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          
+             0   1
+  New       58  22
+  Standard 100  20</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(treatment_data, <span class="fu">aes</span>(<span class="at">x=</span>treatment, <span class="at">fill=</span><span class="fu">factor</span>(success))) <span class="sc">+</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels=</span>scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Treatment Success Rates"</span>,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Percentage"</span>,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Success"</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Common_Stat_Models_with_R_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This simple frequency table suggests that the New treatment might be performing somewhat better than the Standard treatment.</p>
+<p>Next, you used <code>ggplot</code> to create a bar plot showing the proportion of successes within each treatment group. The <code>position=\"fill\"</code> argument rescales the bars to 100%, making it easier to compare relative success rates rather than raw counts. According to the bar plot, the New treatment group has a higher proportion of successes (shown in teal) than the Standard group, though both have fairly high failure rates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logistic regression</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">glm</span>(success <span class="sc">~</span> treatment <span class="sc">+</span> age <span class="sc">+</span> gender, <span class="at">family=</span>binomial, <span class="at">data=</span>treatment_data)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = success ~ treatment + age + gender, family = binomial, 
+    data = treatment_data)
+
+Coefficients:
+                  Estimate Std. Error z value Pr(&gt;|z|)  
+(Intercept)        1.01130    0.95185   1.062   0.2880  
+treatmentStandard -0.74231    0.35994  -2.062   0.0392 *
+age               -0.03402    0.01900  -1.790   0.0735 .
+genderMale        -0.55005    0.35980  -1.529   0.1263  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 205.58  on 199  degrees of freedom
+Residual deviance: 196.05  on 196  degrees of freedom
+AIC: 204.05
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<p>This logistic regression model predicts the probability of treatment success using three predictors: treatment group, age, and gender. The intercept represents the log-odds of success for the reference category, which is the new treatment, at age 0, for females. The coefficient for <code>treatmentStandard</code> is –0.742, which means that being in the standard treatment group is associated with lower log-odds of success compared to the new treatment, adjusting for age and gender. If we exponentiate this coefficient, <code>exp(–0.742) ≈ 0.48</code>, suggesting that the odds of success in the standard treatment group are about 52% lower than in the new treatment group. This effect is statistically significant with a p-value of about 0.039, supporting the conclusion that the new treatment has higher success odds.</p>
+<p>The coefficient for age is about –0.034, with a p-value of 0.073, indicating a possible (though not strongly significant) trend where each additional year of age slightly reduces the odds of success; the odds ratio <code>exp(–0.034) ≈ 0.97</code> means about a 3% decrease in odds per year of age. For gender, males have a coefficient of –0.55 compared to females, corresponding to an odds ratio of <code>exp(–0.55) ≈ 0.58</code>, suggesting about 42% lower odds of success compared to females, although this effect is not statistically significant (p = 0.126).</p>
+<p>Overall, the model suggests that treatment group is the most important predictor, with the new treatment performing significantly better than the standard treatment, even after adjusting for age and gender. The model’s residual deviance (196 on 196 degrees of freedom) is smaller than the null deviance (205), indicating the model explains some variability in success outcomes.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
