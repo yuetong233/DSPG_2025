@@ -16,6 +16,8 @@ website:
         text: API Call
       - href: code/rs_intro.qmd
         text: Remote Sensing
+      - href: code/Common_Stat_Models_with_R.qmd
+        text: Common Statistic Models
 
 format:
   html:
